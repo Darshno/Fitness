@@ -8,6 +8,7 @@ import chatRoutes from "./routes/chat.js";
 import foodRoutes from "./routes/food.js";
 import cycleRoutes from "./routes/cycle.js";
 import analyticsRoutes from "./routes/analytics.js";
+import bodyAnalysisRoutes from "./routes/bodyAnalysis.js";
 
 // Fix DNS resolution issues on Windows for MongoDB Atlas mongodb+srv URIs
 try {
@@ -65,6 +66,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/food", foodRoutes);
 app.use("/api/cycle", cycleRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/body", bodyAnalysisRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error(err);

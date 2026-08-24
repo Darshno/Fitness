@@ -685,3 +685,46 @@
   .landing-hero h1 { font-size: 34px; }
   .auth-card, .profile-card, .settings-card, .panel { padding: 22px; }
 }
+
+/* Women’s care */
+.women-care-page { max-width: 1120px; margin: 0 auto; display: grid; gap: 18px; }
+.women-care-hero {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: 28px; border-radius: 24px; background: var(--hero-gradient); border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.women-care-hero h1 { margin: 6px 0 8px; color: var(--purple-deep); font-size: 30px; }
+.women-care-hero p { margin: 0; color: var(--muted); max-width: 700px; line-height: 1.55; }
+.women-care-icon { width: 70px; height: 70px; border-radius: 22px; display: grid; place-items: center; background: var(--lavender); color: var(--purple); flex: 0 0 auto; }
+.care-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 22px; box-shadow: var(--shadow); }
+.care-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 16px; color: var(--purple); }
+.care-card-head h2 { margin: 0 0 5px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.care-card-head p { margin: 0; color: var(--muted); }
+.care-alert { margin-top: 16px; padding: 15px 16px; border-radius: 14px; background: var(--pink); border: 1px solid var(--line); }
+.care-alert strong { color: var(--purple-deep); }
+.care-alert p { margin: 6px 0 0; color: var(--ink); line-height: 1.5; }
+.care-status-strip { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 18px; padding: 15px 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--lavender); }
+.care-status-strip.pregnancy { background: var(--mint); }
+.care-status-strip.period { background: var(--pink); }
+.care-status-strip div { display: grid; gap: 4px; }
+.care-status-strip span { color: var(--muted); font-size: 13px; }
+.two-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.care-day-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.care-day { min-height: 155px; padding: 15px; border-radius: 16px; background: var(--accent-light); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 7px; }
+.care-day small { color: var(--purple); font-weight: 800; }
+.care-day strong { color: var(--ink); }
+.care-day span { color: var(--muted); font-size: 13px; }
+.care-day p { margin: auto 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.care-note { color: var(--muted); line-height: 1.5; margin: 12px 0 0; }
+.care-disclaimer { background: var(--accent-light); }
+.care-disclaimer p { color: var(--muted); line-height: 1.55; margin-bottom: 0; }
+
+@media (max-width: 900px) { .care-day-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .women-care-hero { padding: 22px; }
+  .women-care-hero h1 { font-size: 25px; }
+  .women-care-icon { width: 56px; height: 56px; border-radius: 17px; }
+  .care-card { padding: 18px; }
+  .care-status-strip { align-items: flex-start; flex-direction: column; }
+  .two-fields, .care-day-grid { grid-template-columns: 1fr; }
+}
+.pregnancy-banner { background: var(--mint); }

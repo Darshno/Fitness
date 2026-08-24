@@ -114,6 +114,107 @@ const EXERCISES = {
   Rest: [],
 };
 
+
+const WOMEN_EXERCISES = {
+  "Pregnancy Walk + Pelvic Floor": [
+    { name: "Brisk or comfortable walk", sets: 1, reps: "20 min", rest: "—" },
+    { name: "Pelvic floor squeezes", sets: 3, reps: "8", rest: "30s" },
+  ],
+  "Pregnancy Strength": [
+    { name: "Supported squat", sets: 2, reps: "10", rest: "60s" },
+    { name: "Resistance-band row", sets: 2, reps: "10", rest: "60s" },
+    { name: "Wall push-up", sets: 2, reps: "10", rest: "60s" },
+    { name: "Bird dog", sets: 2, reps: "6/side", rest: "30s" },
+  ],
+  "Pregnancy Mobility": [
+    { name: "Cat-cow", sets: 2, reps: "8", rest: "20s" },
+    { name: "Gentle hip mobility", sets: 2, reps: "45 sec", rest: "20s" },
+    { name: "Shoulder circles", sets: 2, reps: "10", rest: "15s" },
+    { name: "Slow breathing", sets: 3, reps: "5 breaths", rest: "—" },
+  ],
+  "Pregnancy Cardio": [
+    { name: "Swimming or stationary bike", sets: 1, reps: "20 min", rest: "—" },
+  ],
+  "Easy Walk + Mobility": [
+    { name: "Comfortable walk", sets: 1, reps: "15 min", rest: "—" },
+    { name: "Gentle mobility", sets: 2, reps: "45 sec", rest: "20s" },
+  ],
+  "Easy walk": [
+    { name: "Easy walk", sets: 1, reps: "10 min", rest: "—" },
+  ],
+  "Gentle mobility": [
+    { name: "Shoulder circles", sets: 2, reps: "10", rest: "15s" },
+    { name: "Gentle mobility", sets: 2, reps: "30 sec", rest: "20s" },
+  ],
+  "Period Gentle": [
+    { name: "Easy walk", sets: 1, reps: "15 min", rest: "—" },
+    { name: "Cat-cow", sets: 2, reps: "8", rest: "20s" },
+    { name: "Hip mobility", sets: 2, reps: "45 sec", rest: "20s" },
+  ],
+  "Period Light Strength": [
+    { name: "Bodyweight squat", sets: 2, reps: "10", rest: "60s" },
+    { name: "Band row", sets: 2, reps: "10", rest: "60s" },
+    { name: "Wall push-up", sets: 2, reps: "10", rest: "60s" },
+    { name: "Calf raise", sets: 2, reps: "12", rest: "30s" },
+  ],
+  "Period Recovery": [
+    { name: "Gentle yoga", sets: 1, reps: "15 min", rest: "—" },
+    { name: "Breathing", sets: 3, reps: "5 breaths", rest: "—" },
+  ],
+  "Period Cardio": [
+    { name: "Walking, swimming or cycling", sets: 1, reps: "20 min", rest: "—" },
+  ],
+  "Rest / Mobility": [
+    { name: "Breathing", sets: 3, reps: "5 breaths", rest: "—" },
+    { name: "Gentle stretching", sets: 2, reps: "30 sec", rest: "15s" },
+  ],
+  "Period Full Body": [
+    { name: "Bodyweight squat", sets: 2, reps: "10", rest: "60s" },
+    { name: "Band row", sets: 2, reps: "10", rest: "60s" },
+    { name: "Glute bridge", sets: 2, reps: "10", rest: "45s" },
+    { name: "Bird dog", sets: 2, reps: "6/side", rest: "30s" },
+  ],
+};
+
+const PREGNANCY_TEMPLATES = [
+  { title: "Pregnancy Walk + Pelvic Floor", minutes: 25, focus: "Pregnancy" },
+  { title: "Pregnancy Strength", minutes: 25, focus: "Pregnancy" },
+  { title: "Pregnancy Mobility", minutes: 20, focus: "Recovery" },
+  { title: "Pregnancy Cardio", minutes: 25, focus: "Pregnancy" },
+  { title: "Pregnancy Strength", minutes: 25, focus: "Pregnancy" },
+  { title: "Easy Walk + Mobility", minutes: 20, focus: "Recovery" },
+  { title: "Rest", minutes: 0, focus: "Rest" },
+];
+
+const RESTRICTED_PREGNANCY_TEMPLATES = [
+  { title: "Rest + breathing", minutes: 10, focus: "Rest", note: "Exercise only if your clinician has cleared it." },
+  { title: "Easy walk", minutes: 10, focus: "Rest", note: "Only if cleared by your clinician." },
+  { title: "Rest", minutes: 0, focus: "Rest" },
+  { title: "Gentle mobility", minutes: 10, focus: "Rest", note: "Only if cleared and comfortable." },
+  { title: "Rest", minutes: 0, focus: "Rest" },
+  { title: "Easy walk", minutes: 10, focus: "Rest", note: "Only if cleared by your clinician." },
+  { title: "Rest", minutes: 0, focus: "Rest" },
+];
+
+const PERIOD_TEMPLATES = [
+  { title: "Period Gentle", minutes: 20, focus: "Recovery" },
+  { title: "Period Light Strength", minutes: 25, focus: "Strength" },
+  { title: "Period Recovery", minutes: 20, focus: "Recovery" },
+  { title: "Period Cardio", minutes: 20, focus: "Cardio" },
+  { title: "Rest / Mobility", minutes: 15, focus: "Recovery" },
+  { title: "Period Full Body", minutes: 25, focus: "Strength" },
+  { title: "Rest", minutes: 0, focus: "Rest" },
+];
+
+function womenAwareTemplates(profile = {}) {
+  if (profile.reproductiveStatus === "pregnant" || profile.reproductiveStatus === "possibly_pregnant") {
+    if (profile.pregnancyExerciseRestricted || profile.reproductiveStatus === "possibly_pregnant") return RESTRICTED_PREGNANCY_TEMPLATES;
+    return PREGNANCY_TEMPLATES;
+  }
+  if (profile.gender === "female" && profile.manualPeriodActive === true) return PERIOD_TEMPLATES;
+  return null;
+}
+
 function rotate(list, weekIndex) {
   return list.map((_, index) => list[(index + weekIndex) % list.length]);
 }
@@ -131,8 +232,9 @@ function cycleAwareAdjust(day, inPeriodWindow) {
   return day;
 }
 
-export function generateWorkoutPlan({ goal = "general-fitness", weeks = 4, inPeriodWindow = false } = {}) {
-  const source = TEMPLATES[goal] || TEMPLATES["general-fitness"];
+export function generateWorkoutPlan({ goal = "general-fitness", weeks = 4, inPeriodWindow = false, profile = null } = {}) {
+  const womenSource = womenAwareTemplates(profile || {});
+  const source = womenSource || TEMPLATES[goal] || TEMPLATES["general-fitness"];
   const safeWeeks = Math.min(52, Math.max(1, Number.parseInt(weeks, 10) || 4));
   const plan = {
     generatedAt: new Date().toISOString(),
@@ -143,12 +245,12 @@ export function generateWorkoutPlan({ goal = "general-fitness", weeks = 4, inPer
         week: weekIndex + 1,
         days: DAYS.map((name, dayIndex) => {
           const base = rotated[dayIndex];
-          const adjusted = cycleAwareAdjust(base, inPeriodWindow && weekIndex === 0);
+          const adjusted = womenSource ? base : cycleAwareAdjust(base, inPeriodWindow && weekIndex === 0);
           return {
             id: `w${weekIndex + 1}-d${dayIndex}`,
             day: name,
             ...adjusted,
-            exercises: (EXERCISES[base.title] || []).map((exercise, idx) => ({
+            exercises: (womenSource ? (WOMEN_EXERCISES[base.title] || []) : (EXERCISES[base.title] || [])).map((exercise, idx) => ({
               id: `w${weekIndex + 1}-d${dayIndex}-e${idx}`,
               ...exercise,
             })),

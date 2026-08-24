@@ -193,3 +193,10 @@
   transform: rotate(20deg) scale(1.15);
 }
 
+
+@media (max-width: 720px) {
+  .nav { overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-item { min-width: 68px; flex: 0 0 68px; }
+  .topbar { margin-bottom: 18px; }
+}

@@ -29,6 +29,12 @@ const EMPTY = {
   lastPeriodDate: "",
   cycleLength: "28",
   periodDuration: "5",
+  reproductiveStatus: "not_pregnant",
+  pregnancyWeeks: "",
+  pregnancyExerciseRestricted: false,
+  manualPeriodActive: undefined,
+  periodPain: "0",
+  periodEnergy: "normal",
   mood: "",
   stress: "",
   sleep: "",
@@ -86,11 +92,18 @@ export default function Onboarding() {
       }
     }
     if (step === 4 && data.gender === "female") {
-      if (!data.lastPeriodDate || !data.cycleLength || !data.periodDuration) return "Please complete cycle details, or go back and change gender.";
-      const cycleLength = Number(data.cycleLength);
-      const periodDuration = Number(data.periodDuration);
-      if (cycleLength < 21 || cycleLength > 45) return "Cycle length should be between 21 and 45 days.";
-      if (periodDuration < 1 || periodDuration > 10 || periodDuration >= cycleLength) return "Enter a valid period duration.";
+      if (!data.reproductiveStatus) return "Choose your current reproductive status.";
+      if (data.reproductiveStatus === "pregnant") {
+        const weeks = Number(data.pregnancyWeeks);
+        if (!Number.isFinite(weeks) || weeks < 0 || weeks > 42) return "Enter a pregnancy week between 0 and 42.";
+      }
+      if (data.reproductiveStatus === "not_pregnant") {
+        if (!data.lastPeriodDate || !data.cycleLength || !data.periodDuration) return "Please complete your cycle details.";
+        const cycleLength = Number(data.cycleLength);
+        const periodDuration = Number(data.periodDuration);
+        if (cycleLength < 21 || cycleLength > 45) return "Cycle length should be between 21 and 45 days.";
+        if (periodDuration < 1 || periodDuration > 10 || periodDuration >= cycleLength) return "Enter a valid period duration.";
+      }
     }
     if (step === 5 && (!data.mood || !data.stress || !data.sleep || !data.wellbeing)) {
       return "Pick an option for each wellbeing question.";
@@ -187,16 +200,28 @@ export default function Onboarding() {
 
       {step === 4 && (
         <>
-          <p className="disclaimer">This helps FitBuddy offer gentler suggestions around your cycle. It is not medical care.</p>
-          <label className="field"><span>Last period date</span>
-            <input type="date" value={data.lastPeriodDate} onChange={(e) => set("lastPeriodDate", e.target.value)} />
-          </label>
-          <label className="field"><span>Average cycle length (days)</span>
-            <input type="number" value={data.cycleLength} onChange={(e) => set("cycleLength", e.target.value)} />
-          </label>
-          <label className="field"><span>Average period duration (days)</span>
-            <input type="number" value={data.periodDuration} onChange={(e) => set("periodDuration", e.target.value)} />
-          </label>
+          <p className="disclaimer">Women’s Care changes workouts and recovery suggestions. It is not medical care.</p>
+          <p>Current status</p>
+          <Choice list={[
+            { id: "not_pregnant", label: "Not pregnant" },
+            { id: "pregnant", label: "I’m pregnant" },
+            { id: "possibly_pregnant", label: "Pregnancy is possible" },
+          ]} value={data.reproductiveStatus} field="reproductiveStatus" />
+          {(data.reproductiveStatus === "pregnant" || data.reproductiveStatus === "possibly_pregnant") && (
+            <>
+              {data.reproductiveStatus === "pregnant" && <label className="field"><span>Approximate pregnancy week</span><input type="number" min="0" max="42" value={data.pregnancyWeeks} onChange={(e) => set("pregnancyWeeks", e.target.value)} /></label>}
+              <label className="toggle-row"><span>My clinician has restricted my exercise</span><input type="checkbox" checked={Boolean(data.pregnancyExerciseRestricted)} onChange={(e) => set("pregnancyExerciseRestricted", e.target.checked)} /></label>
+            </>
+          )}
+          {data.reproductiveStatus === "not_pregnant" && (
+            <>
+              <label className="field"><span>Last period date</span><input type="date" value={data.lastPeriodDate} onChange={(e) => set("lastPeriodDate", e.target.value)} /></label>
+              <label className="field"><span>Average cycle length (days)</span><input type="number" value={data.cycleLength} onChange={(e) => set("cycleLength", e.target.value)} /></label>
+              <label className="field"><span>Average period duration (days)</span><input type="number" value={data.periodDuration} onChange={(e) => set("periodDuration", e.target.value)} /></label>
+              <p>Are you on your period today?</p>
+              <Choice list={[{ id: true, label: "Yes" }, { id: false, label: "No" }]} value={data.manualPeriodActive} field="manualPeriodActive" />
+            </>
+          )}
         </>
       )}
 
@@ -284,7 +309,7 @@ export default function Onboarding() {
             <div><span>Goal</span><strong>{labelFor(FITNESS_GOALS, data.goal)}</strong></div>
             <div><span>Timeline</span><strong>{data.timelineWeeks} weeks</strong></div>
             {data.goal !== "general-fitness" && <div><span>Target weight</span><strong>{data.targetWeightKg} kg</strong></div>}
-            {data.gender === "female" && <div><span>Cycle</span><strong>{data.cycleLength}d cycle · {data.periodDuration}d period</strong></div>}
+            {data.gender === "female" && <div><span>Women’s care</span><strong>{data.reproductiveStatus === "pregnant" ? `Pregnant · ${data.pregnancyWeeks} weeks` : data.reproductiveStatus === "possibly_pregnant" ? "Pregnancy possible" : `${data.cycleLength}d cycle · ${data.periodDuration}d period`}</strong></div>}
             <div><span>Mood / stress / sleep</span><strong>{labelFor(MOOD_OPTIONS, data.mood)} · {labelFor(STRESS_OPTIONS, data.stress)} · {labelFor(SLEEP_OPTIONS, data.sleep)}</strong></div>
           </div>
         </>

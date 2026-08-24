@@ -14,6 +14,7 @@ function localFallback(mode) {
     physical: "I can help with your workout. Tell me what you trained recently and what you want to do today.",
     mental: "I'm here to listen. Tell me what's been difficult lately, and we'll take it one small step at a time.",
     nutrition: "I can help with meals, calories, protein, and hydration. Tell me what you've eaten so far today.",
+    cycle: "I can help with period or pregnancy-aware movement, recovery, hydration, and comfort. Tell me what is happening today.",
   };
   return replies[mode] || replies.home;
 }

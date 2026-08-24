@@ -10,6 +10,7 @@ import {
   getProgress,
   getTodayWorkout,
   getWorkoutPlan,
+  generateWorkoutPlan,
   toggleExerciseComplete,
   toggleWorkoutComplete,
   workoutCompletionPercent,
@@ -26,11 +27,14 @@ export default function Physical() {
   const [progress, setProgress] = useState(getProgress());
   const today = getTodayWorkout(getWorkoutPlan());
   const cycle = getCycleStatus(user.profile);
-  const percent = today ? workoutCompletionPercent(today, progress) : 0;
+  const womenMode = cycle.type === "pregnancy" || (cycle.type === "period" && cycle.inWindow);
+  const activeToday = womenMode ? getTodayWorkout(generateWorkoutPlan({ goal: user.profile?.goal, weeks: 4, profile: user.profile, inPeriodWindow: cycle.inWindow })) : today;
+  const shownToday = activeToday || today;
+  const percent = shownToday ? workoutCompletionPercent(shownToday, progress) : 0;
 
-  const canStart = today && today.focus !== "Rest";
+  const canStart = shownToday && shownToday.focus !== "Rest";
 
-  const exerciseRows = useMemo(() => today?.exercises || [], [today]);
+  const exerciseRows = useMemo(() => shownToday?.exercises || [], [shownToday]);
 
   return (
     <div>
@@ -43,8 +47,8 @@ export default function Physical() {
         <button
           className="primary-btn"
           onClick={() => {
-            if (!today) return;
-            setProgress(toggleWorkoutComplete(today.id));
+            if (!shownToday) return;
+            setProgress(toggleWorkoutComplete(shownToday.id));
             toast(percent === 100 ? "Workout reopened" : "Workout marked complete");
           }}
         >
@@ -52,11 +56,18 @@ export default function Physical() {
         </button>
       </div>
 
+      {cycle.applicable && (
+        <div className={`care-status-strip ${cycle.type === "pregnancy" ? "pregnancy" : "period"}`}>
+          <div><strong>{cycle.type === "pregnancy" ? "Pregnancy-aware workout active" : cycle.inWindow ? "Period-aware workout active" : "Cycle-aware care available"}</strong><span>{cycle.message}</span></div>
+          <a href="/cycle-care" className="link-btn">Manage care →</a>
+        </div>
+      )}
+
       <div className="feature-grid">
         <div className="feature-card large">
           <span className="feature-icon"></span>
           <h3>Today’s workout</h3>
-          <p>{today?.title} · {today?.minutes ? `${today.minutes} min` : "Rest"}</p>
+          <p>{shownToday?.title} · {shownToday?.minutes ? `${shownToday.minutes} min` : "Rest"}</p>
           <div className="progress"><i style={{ width: `${percent}%` }} /></div>
           <p>{percent}% complete</p>
           {exerciseRows.map((exercise) => (

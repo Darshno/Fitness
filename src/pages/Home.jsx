@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { getCycleStatus } from "../services/cycleService";
 import { addWater, getFoodLogs, getHydration, totalCalories } from "../services/foodService";
 import { getMood, saveMood } from "../services/notificationService";
-import { getProgress, getTodayWorkout, getWorkoutPlan, workoutCompletionPercent } from "../services/workoutService";
+import { generateWorkoutPlan, getProgress, getTodayWorkout, getWorkoutPlan, workoutCompletionPercent } from "../services/workoutService";
 import { FITNESS_GOALS, MOOD_OPTIONS, labelFor } from "../data/options";
 import { useToast } from "../context/ToastContext";
 
@@ -35,11 +35,12 @@ export default function Home() {
   }, []);
 
   const calories = totalCalories(logs);
-  const plan = getWorkoutPlan();
+  const cycle = getCycleStatus(user.profile);
+  const womenMode = cycle.type === "pregnancy" || (cycle.type === "period" && cycle.inWindow);
+  const plan = womenMode ? generateWorkoutPlan({ goal: user.profile?.goal, weeks: 4, profile: user.profile, inPeriodWindow: cycle.inWindow }) : getWorkoutPlan();
   const today = getTodayWorkout(plan);
   const progress = getProgress();
   const percent = today ? workoutCompletionPercent(today, progress) : 0;
-  const cycle = getCycleStatus(user.profile);
   const glasses = Array.from({ length: hydration.goal }, (_, i) => (i < hydration.glasses ? "▣" : "□")).join(" ");
 
   const goalLabel = labelFor(FITNESS_GOALS, user.profile.goal);
