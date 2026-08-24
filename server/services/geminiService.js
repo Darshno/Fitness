@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-lite";
 const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.5-flash,gemini-3.5-flash-lite")
   .split(",").map((v) => v.trim()).filter(Boolean);
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
