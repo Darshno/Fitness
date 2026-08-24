@@ -141,7 +141,7 @@ export function getWomenCarePlan(status) {
       { title: "Rest / gentle mobility", minutes: hardDay ? 10 : 15, exercises: ["Breathing", "Gentle stretching"] },
       { title: "Light full body", minutes: 25, exercises: ["Squat", "Row", "Glute bridge", "Bird dog"] },
       { title: "Rest", minutes: 0, exercises: [] },
-    ] : null,
+    ] : [],
     notes: [
       "Regular exercise can help some people with period pain and PMS symptoms.",
       "Heat, sleep, hydration, and gentle movement can be useful comfort measures.",
