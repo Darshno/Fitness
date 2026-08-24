@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { acceptPlan } from "../services/userService";
+import { getCycleStatus } from "../services/cycleService";
 import { generateWorkoutPlan, getProgress, getWorkoutPlan, toggleWorkoutComplete } from "../services/workoutService";
 import { useToast } from "../context/ToastContext";
 
@@ -12,10 +13,11 @@ export default function Plan() {
   const [openWeek, setOpenWeek] = useState(1);
   const [selected, setSelected] = useState(null);
   const [progress, setProgress] = useState(getProgress());
-  const plan = getWorkoutPlan() || generateWorkoutPlan({
-    goal: user.profile?.goal,
-    weeks: 4,
-  });
+  const womenStatus = getCycleStatus(user.profile);
+  const cycleProfileMode = womenStatus.type === "pregnancy" || (womenStatus.type === "period" && womenStatus.inWindow);
+  const plan = cycleProfileMode
+    ? generateWorkoutPlan({ goal: user.profile?.goal, weeks: 4, profile: user.profile, inPeriodWindow: womenStatus.inWindow })
+    : (getWorkoutPlan() || generateWorkoutPlan({ goal: user.profile?.goal, weeks: 4, profile: user.profile }));
 
   async function finish() {
     setUser(await acceptPlan());
