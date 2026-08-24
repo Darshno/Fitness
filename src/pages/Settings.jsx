@@ -43,6 +43,12 @@ export default function Settings() {
           lastPeriodDate: form.lastPeriodDate,
           cycleLength: form.cycleLength,
           periodDuration: form.periodDuration,
+          reproductiveStatus: form.reproductiveStatus,
+          pregnancyWeeks: form.pregnancyWeeks,
+          pregnancyExerciseRestricted: form.pregnancyExerciseRestricted,
+          manualPeriodActive: form.manualPeriodActive,
+          periodPain: form.periodPain,
+          periodEnergy: form.periodEnergy,
         },
       });
       setUser(next);
@@ -121,9 +127,10 @@ export default function Settings() {
           </label>
           {form.gender === "female" && (
             <>
-              <label className="field"><span>Last period date</span><input type="date" value={form.lastPeriodDate || ""} onChange={(e) => setForm({ ...form, lastPeriodDate: e.target.value })} /></label>
-              <label className="field"><span>Cycle length</span><input value={form.cycleLength || ""} onChange={(e) => setForm({ ...form, cycleLength: e.target.value })} /></label>
-              <label className="field"><span>Period duration</span><input value={form.periodDuration || ""} onChange={(e) => setForm({ ...form, periodDuration: e.target.value })} /></label>
+              <label className="field"><span>Women’s care status</span><select value={form.reproductiveStatus || "not_pregnant"} onChange={(e) => setForm({ ...form, reproductiveStatus: e.target.value })}><option value="not_pregnant">Not pregnant</option><option value="pregnant">Pregnant</option><option value="possibly_pregnant">Pregnancy possible</option></select></label>
+              {(form.reproductiveStatus === "pregnant" || form.reproductiveStatus === "possibly_pregnant") && <label className="field"><span>Pregnancy week</span><input type="number" min="0" max="42" value={form.pregnancyWeeks || ""} onChange={(e) => setForm({ ...form, pregnancyWeeks: e.target.value })} /></label>}
+              {(form.reproductiveStatus === "pregnant" || form.reproductiveStatus === "possibly_pregnant") && <label className="toggle-row"><span>Clinician has restricted exercise</span><input type="checkbox" checked={Boolean(form.pregnancyExerciseRestricted)} onChange={(e) => setForm({ ...form, pregnancyExerciseRestricted: e.target.checked })} /></label>}
+              {(!form.reproductiveStatus || form.reproductiveStatus === "not_pregnant") && <><label className="field"><span>Last period date</span><input type="date" value={form.lastPeriodDate || ""} onChange={(e) => setForm({ ...form, lastPeriodDate: e.target.value })} /></label><label className="field"><span>Cycle length</span><input value={form.cycleLength || ""} onChange={(e) => setForm({ ...form, cycleLength: e.target.value })} /></label><label className="field"><span>Period duration</span><input value={form.periodDuration || ""} onChange={(e) => setForm({ ...form, periodDuration: e.target.value })} /></label><label className="toggle-row"><span>On my period today</span><input type="checkbox" checked={form.manualPeriodActive === true} onChange={(e) => setForm({ ...form, manualPeriodActive: e.target.checked })} /></label></>}
             </>
           )}
           <div className="btn-row">
