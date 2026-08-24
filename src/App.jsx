@@ -16,6 +16,7 @@ import Nutrition from "./pages/Nutrition";
 import Mental from "./pages/Mental";
 import Settings from "./pages/Settings";
 import Progress from "./pages/Progress";
+import CycleCare from "./pages/CycleCare";
 
 export default function App() {
   return (
@@ -70,6 +71,7 @@ export default function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Navigate to="/settings" replace />} />
           <Route path="/progress" element={<Progress />} />
+          <Route path="/cycle-care" element={<CycleCare />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
