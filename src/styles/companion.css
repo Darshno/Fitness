@@ -1,0 +1,486 @@
+/* Bot Companion Design System & Themes */
+.companion-stage {
+  --bot-border: #6639e9;
+  --bot-glow: #38bdf8;
+  --bot-accent: #818cf8;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* Color Theme Overrides for Bot Graphics */
+.companion-stage.color-lavender { --bot-border: #6639e9; --bot-glow: #38bdf8; --bot-accent: #a78bfa; }
+.companion-stage.color-pink { --bot-border: #db2777; --bot-glow: #f472b6; --bot-accent: #f43f5e; }
+.companion-stage.color-blue { --bot-border: #0284c7; --bot-glow: #38bdf8; --bot-accent: #0284c7; }
+.companion-stage.color-mint { --bot-border: #10b981; --bot-glow: #34d399; --bot-accent: #059669; }
+.companion-stage.color-orange { --bot-border: #ea580c; --bot-glow: #fb923c; --bot-accent: #d97706; }
+.companion-stage.color-cyan { --bot-border: #0891b2; --bot-glow: #22d3ee; --bot-accent: #06b6d4; }
+.companion-stage.color-gold { --bot-border: #d97706; --bot-glow: #facc15; --bot-accent: #eab308; }
+.companion-stage.color-obsidian { --bot-border: #6366f1; --bot-glow: #818cf8; --bot-accent: #4f46e5; }
+
+/* Size Variants */
+.companion-stage.size-xs { width: 44px; height: 52px; }
+.companion-stage.size-sm { width: 120px; height: 140px; }
+.companion-stage.size-md { width: 220px; height: 250px; }
+.companion-stage.size-lg { width: 280px; height: 320px; }
+
+.hero .companion-stage {
+  width: clamp(230px, 40%, 330px);
+  height: 280px;
+  z-index: 2;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.hero .companion-stage.size-face {
+  width: 240px;
+  height: 240px;
+  align-self: center;
+}
+
+.companion-stage.size-face .fitbuddy-bot {
+  animation: none;
+}
+
+.companion-graphic {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fitbuddy-bot {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  animation: botHover 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 14px 20px rgba(47, 35, 95, 0.16));
+}
+
+.bot-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.bot-accessory {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ── Bow — pink ribbon bow on top-right of head ── */
+.accessory-bow {
+  right: 22%;
+  top: 6%;
+  width: 22%;
+  height: 14%;
+  transform: rotate(-8deg);
+}
+
+.accessory-bow::before,
+.accessory-bow::after {
+  content: "";
+  position: absolute;
+  top: 22%;
+  width: 44%;
+  height: 68%;
+  border-radius: 55% 45% 55% 45%;
+}
+
+.accessory-bow::before {
+  left: 2%;
+  background: linear-gradient(145deg, #ffb6d3, #f06da0);
+  transform: rotate(22deg);
+  box-shadow: inset -3px -2px 6px rgba(180, 50, 100, 0.25);
+}
+
+.accessory-bow::after {
+  right: 2%;
+  background: linear-gradient(215deg, #ffb6d3, #f06da0);
+  transform: rotate(-22deg) scaleX(-1);
+  box-shadow: inset 3px -2px 6px rgba(180, 50, 100, 0.25);
+}
+
+/* bow center knot */
+.accessory-bow {
+  background: radial-gradient(ellipse at center, #e8458b 0%, #e8458b 38%, transparent 40%);
+  background-size: 26% 36%;
+  background-position: center 42%;
+  background-repeat: no-repeat;
+}
+
+/* ── Headphones — lavender/purple over-ear headphones ── */
+.accessory-headphones {
+  left: 16%;
+  top: 4%;
+  width: 68%;
+  height: 30%;
+}
+
+/* headband arc */
+.accessory-headphones::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: 0;
+  width: 80%;
+  height: 50%;
+  border: 5px solid #c4b5e3;
+  border-bottom: none;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, #d8cef0 0%, #c4b5e3 100%);
+  box-shadow: 0 -2px 6px rgba(100, 80, 160, 0.15);
+}
+
+/* left ear cup */
+.accessory-headphones::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 30%;
+  width: 22%;
+  height: 52%;
+  border-radius: 8px 4px 4px 8px;
+  background: linear-gradient(180deg, #c9b8e8, #a78bdb);
+  border: 3px solid #9b7fd4;
+  box-shadow: 2px 3px 8px rgba(80, 50, 140, 0.2),
+              inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* right ear cup (separate div) */
+.headphones-right-cup {
+  left: auto !important;
+  right: 16%;
+  top: calc(4% + 30% * 0.3 + 4%);
+  width: calc(68% * 0.22);
+  height: calc(30% * 0.52);
+  border-radius: 4px 8px 8px 4px;
+  background: linear-gradient(180deg, #c9b8e8, #a78bdb) !important;
+  border: 3px solid #9b7fd4;
+  box-shadow: -2px 3px 8px rgba(80, 50, 140, 0.2),
+              inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* ── Tie — dark navy/blue tie on front body ── */
+.accessory-tie {
+  left: 44%;
+  top: 52%;
+  width: 12%;
+  height: 20%;
+}
+
+/* tie knot */
+.accessory-tie::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18%;
+  width: 64%;
+  height: 22%;
+  background: linear-gradient(180deg, #3b4ea0, #2a3b7c);
+  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+}
+
+/* tie body */
+.accessory-tie::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 56%;
+  height: 82%;
+  background: linear-gradient(180deg, #3b4ea0 0%, #243270 60%, #1c2756 100%);
+  clip-path: polygon(10% 0, 90% 0, 62% 100%, 50% 88%, 38% 100%);
+  box-shadow: 1px 2px 4px rgba(20, 30, 60, 0.3);
+}
+
+/* ── Cap — purple/lavender baseball cap ── */
+.accessory-cap {
+  left: 18%;
+  top: 1%;
+  width: 66%;
+  height: 18%;
+}
+
+/* cap dome */
+.accessory-cap::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: 0;
+  width: 80%;
+  height: 72%;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(160deg, #b49ae0, #7c5cbf, #6747a8);
+  box-shadow: 0 3px 8px rgba(90, 60, 150, 0.2),
+              inset 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* cap brim */
+.accessory-cap::after {
+  content: "";
+  position: absolute;
+  right: -6%;
+  bottom: 8%;
+  width: 52%;
+  height: 30%;
+  border-radius: 0 0 999px 999px;
+  background: linear-gradient(180deg, #6747a8, #563d94);
+  transform: rotate(8deg);
+  box-shadow: 0 4px 8px rgba(60, 40, 100, 0.25);
+}
+
+/* cap button on top */
+.accessory-cap {
+  background: radial-gradient(circle at 50% 6%, #9b7fd4 0%, #9b7fd4 4%, transparent 5%);
+}
+
+/* ── Glasses — round silver/grey frames on face ── */
+.accessory-glasses {
+  left: 24%;
+  top: 22%;
+  width: 52%;
+  height: 13%;
+}
+
+/* bridge */
+.accessory-glasses::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 32%;
+  width: 36%;
+  height: 16%;
+  background: linear-gradient(90deg, #a0a0b0, #c0c0d0, #a0a0b0);
+  border-radius: 0 0 8px 8px;
+}
+
+/* left lens + right lens via box-shadow */
+.accessory-glasses::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 5%;
+  width: 36%;
+  height: 78%;
+  border: 3px solid #8888a0;
+  border-radius: 50%;
+  background: rgba(200, 210, 230, 0.12);
+  box-shadow:
+    /* right lens — offset to the right */
+    calc(100% + 18%) 0 0 0 rgba(200, 210, 230, 0.12),
+    calc(100% + 18%) 0 0 2.5px #8888a0,
+    /* subtle glare on left lens */
+    inset 3px -2px 4px rgba(255, 255, 255, 0.3),
+    /* subtle glare on right lens */
+    calc(100% + 21%) -2px 4px rgba(255, 255, 255, 0.15);
+}
+
+/* Animations */
+@keyframes botHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Model Selector Cards */
+.bot-model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+  margin: 14px 0 22px;
+}
+
+.bot-model-card {
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.companion-choice-image {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.bot-model-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--purple);
+  box-shadow: 0 8px 20px var(--shadow);
+}
+
+.bot-model-card.active {
+  border-color: var(--purple);
+  background: var(--accent-light);
+  box-shadow: 0 8px 24px var(--btn-shadow);
+}
+
+.bot-model-card h4 {
+  margin: 10px 0 2px;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.bot-model-card p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+/* Color Swatches Grid */
+.color-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin: 14px 0 22px;
+}
+
+.color-swatch-btn {
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+
+.color-swatch-btn:hover {
+  border-color: var(--purple);
+}
+
+.color-swatch-btn.active {
+  border-color: var(--purple);
+  background: var(--lavender);
+  color: var(--purple-deep);
+}
+
+.swatch-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+/* ─── Customize Your FitBuddy Panel ─── */
+.customize-section {
+  margin-top: 28px;
+  background: linear-gradient(135deg, #f9f5ff 0%, #f3edff 100%);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgba(102, 57, 233, 0.06);
+}
+
+.customize-section h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: var(--purple-deep);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.customize-section .disclaimer {
+  margin: 0 0 22px;
+}
+
+.customize-preview {
+  display: flex;
+  justify-content: center;
+  padding: 18px 0 24px;
+}
+
+.customize-preview .companion-stage {
+  filter: drop-shadow(0 18px 30px rgba(102, 57, 233, 0.14));
+}
+
+.accessory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+.accessory-option {
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.accessory-option:hover {
+  transform: translateY(-3px);
+  border-color: var(--purple);
+  box-shadow: 0 8px 20px rgba(102, 57, 233, 0.1);
+}
+
+.accessory-option.active {
+  border-color: var(--purple);
+  background: var(--lavender);
+  color: var(--purple-deep);
+  box-shadow: 0 6px 18px var(--btn-shadow);
+}
+
+.accessory-option.active::after {
+  content: "✓";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--purple);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.accessory-option-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.accessory-option span:last-child {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.accessory-option.active span:last-child {
+  color: var(--purple-deep);
+}
+
