@@ -8,12 +8,18 @@ export default function CompanionChat({ mode = "home", opener = "Hey! What can I
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
+  const [aiEnabled, setAiEnabled] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
     (async () => {
-      const existing = await getChatHistory(mode);
-      if (active) setMessages(existing.length ? existing : seedChat(mode, opener));
+      try {
+        const existing = await getChatHistory(mode);
+        if (active) setMessages(existing.length ? existing : seedChat(mode, opener));
+      } catch (error) {
+        if (active) setError(error.message);
+      }
     })();
     return () => { active = false; };
   }, [mode, opener]);
@@ -24,9 +30,14 @@ export default function CompanionChat({ mode = "home", opener = "Hey! What can I
     if (!value || sending) return;
     setText("");
     setSending(true);
+    setError("");
     try {
       const result = await sendChatMessage({ mode, text: value });
       if (result?.history) setMessages(result.history);
+      if (typeof result?.aiEnabled === "boolean") setAiEnabled(result.aiEnabled);
+      if (result?.fallback) setError("AI service is unavailable, so FitBuddy is using a limited local fallback.");
+    } catch (error) {
+      setError(error.message);
     } finally {
       setSending(false);
     }
@@ -48,6 +59,8 @@ export default function CompanionChat({ mode = "home", opener = "Hey! What can I
         ))}
         {sending && <div className="message bot" aria-label="FitBuddy is typing">FitBuddy is thinking…</div>}
       </div>
+      {error && <p className="form-error" style={{ marginTop: 10 }}>{error}</p>}
+      {!aiEnabled && !error && <p className="disclaimer">AI service is not connected. Connect the backend and GEMINI_API_KEY for full FitBuddy answers.</p>}
       <p className="disclaimer">AI guidance is general wellbeing support, not medical diagnosis or treatment.</p>
       <form className="chat-input" onSubmit={onSubmit}>
         <input value={text} onChange={(e) => setText(e.target.value)} placeholder={placeholder} disabled={sending} autoComplete="off" />
