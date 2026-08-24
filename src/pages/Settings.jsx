@@ -18,6 +18,7 @@ export default function Settings() {
     name: user.name,
     ...user.profile,
   });
+  const [botName, setBotName] = useState(user?.companion?.name || "FitBuddy");
 
   function toggleReminder(key) {
     const next = { ...reminders, [key]: !reminders[key] };
@@ -145,8 +146,13 @@ export default function Settings() {
         <span>Companion Name</span>
         <input
           type="text"
-          value={user?.companion?.name || "FitBuddy"}
-          onChange={(e) => setBot({ name: e.target.value })}
+          value={botName}
+          onChange={(e) => setBotName(e.target.value)}
+          onBlur={() => {
+            if (botName !== (user?.companion?.name || "FitBuddy")) {
+              setBot({ name: botName });
+            }
+          }}
           placeholder="Name your bot companion..."
         />
       </label>
@@ -168,26 +174,7 @@ export default function Settings() {
         ))}
       </div>
 
-      <div className="customize-section">
-        <h3>Customize Your FitBuddy</h3>
-        <p className="disclaimer">Add an accessory to make your companion unique. Only one can be active at a time.</p>
-        <div className="customize-preview">
-          <Companion color={activeColor} accessory={activeAccessory} variant={activeVariant} size="md" />
-        </div>
-        <div className="accessory-grid">
-          {COMPANION_ACCESSORIES.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`accessory-option ${activeAccessory === item.id ? "active" : ""}`}
-              onClick={() => setBot({ accessory: item.id })}
-            >
-              <span className="accessory-option-icon">{item.icon}</span>
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+
 
       {/* ── Notifications Section ── */}
       <h3>Notifications</h3>

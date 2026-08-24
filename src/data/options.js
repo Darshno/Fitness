@@ -67,7 +67,6 @@ export const COMPANION_COLORS = [
   { id: "orange", label: "Sunset", accent: "#ea580c", light: "#fff7ed" },
   { id: "cyan", label: "Cyber Cyan", accent: "#06b6d4", light: "#ecfeff" },
   { id: "gold", label: "Solar Gold", accent: "#d97706", light: "#fefce8" },
-  { id: "obsidian", label: "Obsidian", accent: "#4f46e5", light: "#f5f3ff" },
 ];
 
 export const COMPANION_ACCESSORIES = [

@@ -24,10 +24,45 @@ export default function Mental() {
     if (history.length) {
       setMessages(history);
     } else {
-      const seeded = seedChat(
-        "mental",
-        "Hmm... it sounds like today has been a bit overwhelming. Would you like to talk about it?"
-      );
+      // Build a personalised opener from the user's onboarding wellbeing metadata
+      const p = user?.profile || {};
+      let opener = "I'm here with you. How are you feeling today?";
+
+      if (p.mood || p.stress || p.sleep || p.wellbeing || p.cope) {
+        const moodLabel = p.mood
+          ? { low: "low", okay: "okay", good: "good", great: "great" }[p.mood] || p.mood
+          : null;
+        const stressLabel = p.stress
+          ? { high: "high", medium: "moderate", low: "low" }[p.stress] || p.stress
+          : null;
+        const sleepLabel = p.sleep
+          ? { poor: "poor", okay: "okay", good: "good" }[p.sleep] || p.sleep
+          : null;
+        const wellbeingLabel = p.wellbeing
+          ? {
+              struggling: "a bit of a struggle",
+              mixed: "a bit mixed",
+              steady: "pretty steady",
+              strong: "feeling strong",
+            }[p.wellbeing] || p.wellbeing
+          : null;
+
+        const parts = [];
+        if (moodLabel) parts.push(`your mood has been ${moodLabel}`);
+        if (stressLabel) parts.push(`stress is ${stressLabel}`);
+        if (sleepLabel) parts.push(`sleep has been ${sleepLabel}`);
+        if (wellbeingLabel) parts.push(`overall things feel ${wellbeingLabel}`);
+
+        const context = parts.length > 0 ? `I can see ${parts.join(", ")}. ` : "";
+        const copeNote =
+          p.cope?.trim()
+            ? `You mentioned that you cope by: "${p.cope.trim()}". That's a great starting point. `
+            : "";
+
+        opener = `${context}${copeNote}I'm here whenever you want to talk — what's on your mind today?`;
+      }
+
+      const seeded = seedChat("mental", opener);
       setMessages(seeded);
     }
   }, []);
@@ -64,17 +99,15 @@ export default function Mental() {
           <p>You matter. I’m here with you.</p>
         </div>
         <div className="mental-actions">
-          <button type="button" className="icon-btn" onClick={() => toast("Need help? Click the support button below anytime.")} aria-label="Help">
-            ?
-          </button>
+
           <NavLink to="/settings" className="icon-btn" aria-label="Notifications">
-            
+
           </NavLink>
           <NavLink to="/settings" className="avatar">
             {user?.name?.[0]?.toUpperCase() || "U"}
           </NavLink>
           <button type="button" className="mood-history-btn" onClick={() => setMoodModal(true)}>
-             Mood History
+            Mood History
           </button>
         </div>
       </header>
@@ -147,13 +180,13 @@ export default function Mental() {
               ×
             </button>
             <h2>Immediate Support Resources</h2>
-            <p style={{ lineHeight: 1.5, color: "#3d3b59" }}>
+            <p style={{ lineHeight: 1.5, color: "var(--ink)" }}>
               If you or someone you know is in crisis or needs urgent assistance, please reach out immediately to one of these free, confidential 24/7 resources:
             </p>
 
-            <div className="cycle-banner" style={{ background: "#fff1f6", borderLeft: "4px solid #db2777", marginTop: 16 }}>
-              <strong style={{ color: "#831843", fontSize: 16 }}>Emergency & Lifelines</strong>
-              <ul style={{ margin: "10px 0 0", paddingLeft: 20, color: "#47152a", lineHeight: 1.6 }}>
+            <div className="cycle-banner" style={{ background: "var(--pink)", borderLeft: "4px solid var(--purple)", marginTop: 16 }}>
+              <strong style={{ color: "var(--purple-deep)", fontSize: 16 }}>Emergency & Lifelines</strong>
+              <ul style={{ margin: "10px 0 0", paddingLeft: 20, color: "var(--ink)", lineHeight: 1.6 }}>
                 <li><strong>Immediate danger:</strong> Contact your local emergency services now.</li>
                 <li><strong>Crisis support:</strong> Use a crisis service available in your country.</li>
                 <li><strong>International directory:</strong> The International Association for Suicide Prevention can help locate local services.</li>

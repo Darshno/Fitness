@@ -20,6 +20,7 @@ export default function MentalScene({
           accessory={companion.accessory || "none"}
           variant={companion.variant}
           size="md"
+          isTherapist={true}
         />
       </div>
     </div>

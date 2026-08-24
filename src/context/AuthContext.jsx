@@ -8,8 +8,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => authService.getCurrentUser());
 
   useEffect(() => {
-    applyUITheme(user?.companion?.color || "lavender");
+    const isDark = localStorage.getItem("fitbuddy.darkMode") === "true";
+    if (isDark) {
+      applyUITheme("dark");
+    } else {
+      applyUITheme(user?.companion?.color || "lavender");
+    }
   }, [user?.companion?.color]);
+
 
   const value = useMemo(() => ({
     user,

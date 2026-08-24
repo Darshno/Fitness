@@ -27,7 +27,7 @@ export default function Nutrition() {
       <div className="mode-header nutrition-header">
         <div>
           <span className="eyebrow">NUTRITION MODE</span>
-          <h2>Fuel up 🍎</h2>
+          <h2>Fuel up</h2>
           <p>Meals, hydration and calories for today.</p>
         </div>
         <button className="primary-btn" onClick={() => setFoodOpen(true)}>
@@ -37,7 +37,7 @@ export default function Nutrition() {
 
       <div className="feature-grid">
         <div className="feature-card large">
-          <span className="feature-icon pink-icon">🍽</span>
+          <span className="feature-icon pink-icon"></span>
           <h3>Today’s meals</h3>
           <strong className="big-number">{calories}</strong>
           <p>calories logged</p>
@@ -50,7 +50,7 @@ export default function Nutrition() {
           {!logs.length && <p>No meals logged yet today.</p>}
         </div>
         <div className="feature-card">
-          <span className="feature-icon green">💧</span>
+          <span className="feature-icon green"></span>
           <h3>Hydration</h3>
           <strong className="big-number">{hydration.glasses} / {hydration.goal}</strong>
           <p>glasses</p>
@@ -64,7 +64,7 @@ export default function Nutrition() {
           </button>
         </div>
         <div className="feature-card">
-          <span className="feature-icon">💬</span>
+          <span className="feature-icon"></span>
           <h3>Ask FitBuddy</h3>
           <p>“Is this a good snack before a workout?”</p>
           <button className="primary-btn" onClick={() => setChatOpen(true)}>

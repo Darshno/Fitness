@@ -298,7 +298,7 @@
 
 .bot-model-card {
   border: 2px solid var(--line);
-  background: #fff;
+  background: var(--card-bg, #fff);
   border-radius: 18px;
   padding: 16px 12px;
   text-align: center;
@@ -324,7 +324,7 @@
 
 .bot-model-card.active {
   border-color: var(--purple);
-  background: var(--accent-light);
+  background: var(--lavender);
   box-shadow: 0 8px 24px var(--btn-shadow);
 }
 
@@ -351,7 +351,7 @@
 
 .color-swatch-btn {
   border: 2px solid var(--line);
-  background: #fff;
+  background: var(--card-bg, #fff);
   border-radius: 14px;
   padding: 10px;
   display: flex;
@@ -378,7 +378,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid var(--line);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
 }
@@ -386,11 +386,11 @@
 /* ─── Customize Your FitBuddy Panel ─── */
 .customize-section {
   margin-top: 28px;
-  background: linear-gradient(135deg, #f9f5ff 0%, #f3edff 100%);
+  background: var(--lavender);
   border: 1px solid var(--line);
   border-radius: 22px;
   padding: 28px;
-  box-shadow: 0 8px 24px rgba(102, 57, 233, 0.06);
+  box-shadow: var(--shadow);
 }
 
 .customize-section h3 {
@@ -404,6 +404,7 @@
 
 .customize-section .disclaimer {
   margin: 0 0 22px;
+  color: var(--muted);
 }
 
 .customize-preview {
@@ -424,7 +425,7 @@
 
 .accessory-option {
   border: 2px solid var(--line);
-  background: #fff;
+  background: var(--card-bg, #fff);
   border-radius: 16px;
   padding: 16px 10px;
   text-align: center;

@@ -6,9 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { applyUITheme, completeOnboarding, updateCompanion } from "../services/userService";
 import {
   ACTIVITY_LEVELS,
-  COMPANION_ACCESSORIES,
   COMPANION_COLORS,
-  COPE_OPTIONS,
   FITNESS_GOALS,
   GENDERS,
   MOOD_OPTIONS,
@@ -45,7 +43,6 @@ export default function Onboarding() {
   const [data, setData] = useState({ ...EMPTY, ...user.profile });
   const [botName, setBotName] = useState(user.companion?.name || "FitBuddy");
   const [botColor, setBotColor] = useState(user.companion?.color || "lavender");
-  const [botAccessory, setBotAccessory] = useState(user.companion?.accessory || "none");
   const [botVariant, setBotVariant] = useState(user.companion?.variant || localStorage.getItem("fitbuddy.companionVariant") || "lady");
   const [error, setError] = useState("");
 
@@ -95,8 +92,11 @@ export default function Onboarding() {
       if (cycleLength < 21 || cycleLength > 45) return "Cycle length should be between 21 and 45 days.";
       if (periodDuration < 1 || periodDuration > 10 || periodDuration >= cycleLength) return "Enter a valid period duration.";
     }
-    if (step === 5 && (!data.mood || !data.stress || !data.sleep || !data.cope || !data.wellbeing)) {
+    if (step === 5 && (!data.mood || !data.stress || !data.sleep || !data.wellbeing)) {
       return "Pick an option for each wellbeing question.";
+    }
+    if (step === 5 && !data.cope?.trim()) {
+      return "Please describe how you generally cope — even a few words helps.";
     }
     return "";
   }
@@ -118,7 +118,7 @@ export default function Onboarding() {
 
   async function finish() {
     try {
-      await updateCompanion({ name: botName || "FitBuddy", color: botColor, accessory: botAccessory, variant: botVariant });
+      await updateCompanion({ name: botName || "FitBuddy", color: botColor, variant: botVariant });
       const nextUser = await completeOnboarding(data);
       setUser(nextUser);
       navigate("/goal-assessment");
@@ -209,7 +209,29 @@ export default function Onboarding() {
           <p>Sleep</p>
           <Choice list={SLEEP_OPTIONS} value={data.sleep} field="sleep" />
           <p>How you generally cope</p>
-          <Choice list={COPE_OPTIONS} value={data.cope} field="cope" />
+          <label className="field" style={{ marginBottom: 0 }}>
+            <textarea
+              rows={3}
+              value={data.cope}
+              onChange={(e) => set("cope", e.target.value)}
+              placeholder="e.g. I like to go for a walk, talk to a friend, journal my thoughts…"
+              style={{
+                resize: "vertical",
+                borderRadius: 13,
+                border: "1px solid var(--line)",
+                padding: "13px 15px",
+                outline: "none",
+                background: "var(--input-bg, #fff)",
+                color: "var(--ink)",
+                width: "100%",
+                fontFamily: "inherit",
+                fontSize: 15,
+                lineHeight: 1.5,
+                transition: "border-color 0.2s ease, background-color 0.2s ease",
+                boxSizing: "border-box",
+              }}
+            />
+          </label>
           <p>General wellbeing</p>
           <Choice list={WELLBEING_OPTIONS} value={data.wellbeing} field="wellbeing" />
         </>
@@ -219,7 +241,7 @@ export default function Onboarding() {
         <>
           <CompanionSelector value={botVariant} onChange={setBotVariant} />
           <div style={{ textAlign: "center", margin: "16px 0" }}>
-            <Companion color={botColor} accessory={botAccessory} variant={botVariant} size="sm" />
+            <Companion color={botColor} variant={botVariant} size="sm" />
             <h4 style={{ margin: "10px 0 0", fontSize: 18, color: "var(--purple-deep)" }}>{botName || "FitBuddy"}</h4>
           </div>
 
@@ -232,20 +254,6 @@ export default function Onboarding() {
               placeholder="Give your companion a custom name..."
             />
           </label>
-
-          <h3>Choose Accessory</h3>
-          <div className="choice-grid">
-            {COMPANION_ACCESSORIES.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={`choice ${botAccessory === item.id ? "active" : ""}`}
-                onClick={() => setBotAccessory(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
 
           <h3>Choose Theme Color</h3>
           <p className="disclaimer">The app theme will change to match your color choice.</p>
@@ -268,7 +276,7 @@ export default function Onboarding() {
       {step === 7 && (
         <>
           <div className="summary-list">
-            <div><span>FitBuddy</span><strong>{botVariant === "male" ? "Male" : "Lady"} · {labelFor(COMPANION_ACCESSORIES, botAccessory)} ({labelFor(COMPANION_COLORS, botColor)})</strong></div>
+            <div><span>FitBuddy</span><strong>{botVariant === "male" ? "Male" : "Lady"} ({labelFor(COMPANION_COLORS, botColor)})</strong></div>
             <div><span>Age</span><strong>{data.age}</strong></div>
             <div><span>Gender</span><strong>{labelFor(GENDERS, data.gender)}</strong></div>
             <div><span>Height / weight</span><strong>{data.heightCm} cm · {data.weightKg} kg</strong></div>

@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { Home, Dumbbell, Apple, Brain, TrendingUp, Settings } from "lucide-react";
+import { Home, Dumbbell, Apple, Brain, TrendingUp, Settings, Moon, Sun } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { greetingForName } from "../services/userService";
+import { greetingForName, applyUITheme } from "../services/userService";
 
 const TITLES = {
-  "/home": ["", "Here’s your personalized plan for today"],
+  "/home": ["", "Here's your personalized plan for today"],
   "/physical": ["Physical Mode", "Your workout, food and hydration in one place."],
   "/nutrition": ["Nutrition Mode", "Meals, hydration and calories for today."],
   "/mental": ["Mental Mode", "A calmer space to check in with yourself."],
@@ -19,6 +20,21 @@ export default function AppLayout() {
   const title = location.pathname === "/home"
     ? `${greetingForName(user.name)} `
     : meta[0];
+
+  const [isDark, setIsDark] = useState(
+    () => localStorage.getItem("fitbuddy.darkMode") === "true"
+  );
+
+  function toggleDark() {
+    const next = !isDark;
+    setIsDark(next);
+    localStorage.setItem("fitbuddy.darkMode", String(next));
+    if (next) {
+      applyUITheme("dark");
+    } else {
+      applyUITheme(user?.companion?.color || "lavender");
+    }
+  }
 
   return (
     <div className="app-shell">
@@ -38,6 +54,14 @@ export default function AppLayout() {
           <NavLink to="/progress" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><TrendingUp size={20} strokeWidth={2} />Progress</NavLink>
           <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><Settings size={20} strokeWidth={2} />Settings</NavLink>
         </nav>
+        <div className="sidebar-bottom">
+          <button className="dark-toggle" onClick={toggleDark} title={isDark ? "Switch to light mode" : "Switch to dark mode"}>
+            <span className="dark-toggle-icon">
+              {isDark ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
+            </span>
+            {isDark ? "Light mode" : "Dark mode"}
+          </button>
+        </div>
       </aside>
       <main className="main">
         {location.pathname !== "/mental" && (
@@ -56,3 +80,4 @@ export default function AppLayout() {
     </div>
   );
 }
+
