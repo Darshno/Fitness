@@ -1,5 +1,5 @@
-const DEFAULT_MODEL = process.env.GEMINI_MODEL || "gemini-3.7-flash";
-const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.6-flash,gemini-3.5-flash")
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const FALLBACK_MODELS = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.5-flash,gemini-3.5-flash-lite")
   .split(",").map((v) => v.trim()).filter(Boolean);
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
 
@@ -18,7 +18,7 @@ async function requestModel(model, parts) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ role: "user", parts }],
-          generationConfig: { temperature: 0.4, maxOutputTokens: 1200 },
+          generationConfig: { temperature: 0.35, maxOutputTokens: 900 },
         }),
         signal: controller.signal,
       }
@@ -52,13 +52,10 @@ async function generateContent({ prompt, image }) {
     } catch (error) {
       lastError = error;
       console.error(`Gemini model ${model} failed:`, error.message);
-      // Try the next configured model for transient availability/rate-limit/server errors.
       if (![429, 500, 502, 503, 504].includes(error.status)) break;
     }
   }
-
-  // Do not make a temporary provider outage crash the API caller.
-  console.warn("All configured Gemini models failed; using non-AI fallback.");
+  console.warn("All configured Gemini models failed; using deterministic FitBuddy fallback.", lastError?.message || "");
   return null;
 }
 
