@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { Home, Dumbbell, Apple, Brain, TrendingUp, Settings, Moon, Sun } from "lucide-react";
+import { Home, Dumbbell, Apple, Brain, TrendingUp, Settings, Moon, Sun, HeartPulse } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { greetingForName, applyUITheme } from "../services/userService";
 
@@ -11,6 +11,7 @@ const TITLES = {
   "/mental": ["Mental Mode", "A calmer space to check in with yourself."],
   "/settings": ["Settings", "Manage your FitBuddy preferences."],
   "/progress": ["Progress", "See your recent fitness and wellbeing trends."],
+  "/cycle-care": ["Women’s Care", "Period and pregnancy-aware movement and care."],
 };
 
 export default function AppLayout() {
@@ -52,6 +53,9 @@ export default function AppLayout() {
           <NavLink to="/nutrition" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><Apple size={20} strokeWidth={2} />Nutrition</NavLink>
           <NavLink to="/mental" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><Brain size={20} strokeWidth={2} />Mental</NavLink>
           <NavLink to="/progress" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><TrendingUp size={20} strokeWidth={2} />Progress</NavLink>
+          {user?.profile?.gender === "female" && (
+            <NavLink to="/cycle-care" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><HeartPulse size={20} strokeWidth={2} />Women’s Care</NavLink>
+          )}
           <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}><Settings size={20} strokeWidth={2} />Settings</NavLink>
         </nav>
         <div className="sidebar-bottom">
