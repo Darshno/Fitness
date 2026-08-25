@@ -7,6 +7,7 @@ import "./index.css";
 import "./styles/companion.css";
 import "./styles/layout.css";
 import "./styles/pages.css";
+import "./styles/bodyCapture.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

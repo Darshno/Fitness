@@ -18,7 +18,10 @@ async function requestModel(model, parts) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ role: "user", parts }],
-          generationConfig: { temperature: 0.35, maxOutputTokens: 900 },
+          // Lower temperature + more output room: the body-analysis prompt asks
+          // for a longer structured JSON object, and we want repeatable,
+          // less noisy field values run to run.
+          generationConfig: { temperature: 0.25, maxOutputTokens: 1200 },
         }),
         signal: controller.signal,
       }
