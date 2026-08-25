@@ -728,3 +728,121 @@
   .two-fields, .care-day-grid { grid-template-columns: 1fr; }
 }
 .pregnancy-banner { background: var(--mint); }
+
+/* Redesigned Cycle Care */
+.cycle-care-page { max-width: 1160px; margin: 0 auto; display: grid; gap: 22px; }
+.cycle-hero-new { min-height: 360px; padding: 42px 48px; border-radius: 34px; overflow: hidden; position: relative; display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; background: linear-gradient(135deg, #fff9f7 0%, #fff2e8 52%, #f4edff 100%); border: 1px solid #f1dfe2; box-shadow: 0 20px 55px rgba(93, 53, 214, .08); }
+.cycle-hero-copy { position: relative; z-index: 2; }
+.cycle-hero-new h1 { margin: 9px 0 13px; font-size: clamp(38px, 5vw, 64px); line-height: .98; letter-spacing: -2.5px; color: #252044; max-width: 650px; }
+.cycle-hero-new p { max-width: 650px; margin: 0; color: #716a7d; font-size: 17px; line-height: 1.65; }
+.cycle-hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 26px; }
+.cycle-primary-btn { border: 0; padding: 13px 20px; border-radius: 999px; background: #282044; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 10px 24px rgba(40, 32, 68, .16); }
+.cycle-estimate-note { font-size: 12px; color: #8b7f8a; }
+.cycle-hero-visual { min-height: 280px; position: relative; display: grid; place-items: center; }
+.cycle-orbit { position: absolute; border: 1px solid rgba(154, 101, 214, .18); border-radius: 50%; transform: rotate(-18deg); }
+.orbit-one { width: 260px; height: 160px; }
+.orbit-two { width: 340px; height: 220px; transform: rotate(35deg); }
+.cycle-sun { width: 118px; height: 118px; border-radius: 50%; display: grid; place-items: center; color: #7b4ec5; background: radial-gradient(circle at 35% 30%, #fff 0 12%, #ffd9c5 13% 38%, #d9c5ff 39% 100%); box-shadow: 0 20px 50px rgba(126, 77, 189, .18); position: relative; z-index: 2; }
+.cycle-overview-grid { display: grid; grid-template-columns: 1.35fr .8fr .8fr; gap: 14px; }
+.cycle-current-card, .cycle-stat-card { min-height: 116px; border: 1px solid #eee8f2; background: #fff; border-radius: 22px; padding: 22px; box-shadow: 0 12px 34px rgba(41, 33, 67, .06); }
+.cycle-current-card { display: flex; align-items: center; gap: 15px; }
+.cycle-phase-icon { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; background: #f2ecff; color: #7751b8; flex: 0 0 auto; }
+.cycle-phase-icon.rose { background: #fff0ef; color: #c86c75; }
+.cycle-phase-icon.mint { background: #eaf8f1; color: #4b9b7a; }
+.cycle-phase-icon.gold { background: #fff7d8; color: #b78a2c; }
+.cycle-phase-icon.lavender { background: #f0ebff; color: #7953b6; }
+.cycle-label { font-size: 11px; letter-spacing: 1.5px; font-weight: 900; color: #978ca2; }
+.cycle-current-card h2 { margin: 3px 0 5px; font-size: 20px; color: #282044; }
+.cycle-current-card p, .cycle-stat-card small { margin: 0; color: #80768b; font-size: 13px; }
+.cycle-stat-card { display: flex; flex-direction: column; justify-content: center; }
+.cycle-stat-card span { color: #8a8092; font-size: 12px; }
+.cycle-stat-card strong { color: #282044; font-size: 22px; margin: 4px 0; }
+.cycle-calendar-card, .cycle-phase-section, .cycle-details-card, .cycle-care-plan-card, .cycle-chat-card, .cycle-pregnancy-card { background: #fff; border: 1px solid #eee8f2; border-radius: 26px; padding: 28px; box-shadow: 0 14px 38px rgba(41, 33, 67, .06); }
+.cycle-section-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
+.cycle-section-heading.compact { margin-bottom: 20px; }
+.cycle-section-heading h2 { margin: 5px 0 7px; color: #282044; font-size: 25px; }
+.cycle-section-heading p { margin: 0; color: #7d7386; line-height: 1.55; max-width: 720px; }
+.cycle-month-nav { display: flex; align-items: center; gap: 12px; padding: 7px; border: 1px solid #ece6f0; border-radius: 999px; background: #faf8fc; }
+.cycle-month-nav strong { min-width: 125px; text-align: center; color: #30284a; font-size: 14px; }
+.cycle-month-nav button { width: 32px; height: 32px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #fff; color: #625574; cursor: pointer; }
+.cycle-legend { display: flex; gap: 18px; flex-wrap: wrap; margin: 22px 0 13px; color: #81778a; font-size: 12px; }
+.cycle-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.legend-dot.period { background: #efb0b8; }
+.legend-dot.fertile { background: #f5d86c; }
+.legend-dot.ovulation { border: 2px solid #9b6ad2; background: transparent; }
+.cycle-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.cycle-calendar-weekdays span { padding: 9px 5px; text-align: center; color: #9b91a0; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; }
+.cycle-calendar-days { border-top: 1px solid #f0ebf1; border-left: 1px solid #f0ebf1; }
+.cycle-calendar-day { min-height: 82px; padding: 10px; position: relative; background: #fff; border-right: 1px solid #f0ebf1; border-bottom: 1px solid #f0ebf1; color: #3a3249; }
+.cycle-calendar-day strong { display: block; font-size: 15px; }
+.cycle-calendar-day small { display: block; margin-top: 5px; color: #a49aa9; font-size: 9px; }
+.cycle-calendar-day.period { background: #fff0ef; color: #9e555f; }
+.cycle-calendar-day.fertile { background: #fff7cf; color: #8f7025; }
+.cycle-calendar-day.period.fertile { background: linear-gradient(135deg, #fff0ef 0 48%, #fff7cf 49%); }
+.cycle-calendar-day.ovulation { box-shadow: inset 0 0 0 2px #a271d4; z-index: 1; }
+.cycle-calendar-day.today strong { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: #282044; color: #fff; }
+.cycle-calendar-day.blank { background: #fbfafc; }
+.calendar-marker { position: absolute; right: 7px; bottom: 7px; font-size: 8px; font-weight: 800; color: #8b5ebd; }
+.cycle-setup-card { display: grid; grid-template-columns: auto 1fr 260px; align-items: center; gap: 18px; padding: 24px 28px; border-radius: 24px; background: linear-gradient(135deg, #f7f0ff, #fff8f4); border: 1px solid #e7dff2; }
+.cycle-setup-icon { width: 50px; height: 50px; border-radius: 16px; display: grid; place-items: center; background: #fff; color: #7a51b9; }
+.cycle-setup-card h2 { margin: 4px 0 5px; color: #282044; }
+.cycle-setup-card p { margin: 0; color: #7e7388; }
+.cycle-input-wrap { display: grid; gap: 7px; color: #61576c; font-size: 12px; font-weight: 700; }
+.cycle-input-wrap input, .cycle-detail-field input { width: 100%; box-sizing: border-box; border: 1px solid #e5dfe9; background: #fff; color: #30284a; border-radius: 13px; padding: 12px 13px; font: inherit; }
+.cycle-phase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cycle-phase-card { padding: 20px; border-radius: 21px; border: 1px solid #ece6ef; background: #fff; min-height: 360px; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.cycle-phase-card.active { transform: translateY(-4px); border-color: #b695d6; box-shadow: 0 14px 32px rgba(117, 75, 167, .12); }
+.cycle-phase-card.rose { background: linear-gradient(180deg, #fff5f4, #fff); }
+.cycle-phase-card.mint { background: linear-gradient(180deg, #f1fbf6, #fff); }
+.cycle-phase-card.gold { background: linear-gradient(180deg, #fff9df, #fff); }
+.cycle-phase-card.lavender { background: linear-gradient(180deg, #f6f1ff, #fff); }
+.cycle-phase-card-top { display: flex; justify-content: space-between; align-items: center; }
+.phase-current { padding: 5px 9px; border-radius: 999px; background: #282044; color: #fff; font-size: 10px; font-weight: 800; }
+.cycle-phase-card h3 { margin: 18px 0 7px; color: #2c2543; font-size: 19px; }
+.cycle-phase-card > p { margin: 0; color: #756b7e; line-height: 1.55; font-size: 13px; }
+.cycle-phase-card ul { margin: 18px 0 0; padding-left: 17px; color: #665d70; font-size: 12px; line-height: 1.55; }
+.cycle-phase-card li + li { margin-top: 9px; }
+.cycle-details-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cycle-detail-field { display: grid; gap: 8px; color: #5d5369; font-size: 12px; font-weight: 800; }
+.cycle-choice-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.cycle-choice-row button { flex: 1; min-height: 43px; padding: 9px 12px; border-radius: 12px; border: 1px solid #e4dce9; background: #fff; color: #665b72; cursor: pointer; font: inherit; }
+.cycle-choice-row button.active { background: #282044; color: #fff; border-color: #282044; }
+.cycle-plan-highlight { display: flex; justify-content: space-between; gap: 16px; padding: 15px 17px; margin-bottom: 16px; border-radius: 16px; background: #f7f2ff; color: #574a6a; }
+.cycle-plan-highlight strong { color: #3a2f55; }
+.cycle-plan-highlight span { color: #857a8e; font-size: 12px; }
+.cycle-pregnancy-card { background: linear-gradient(135deg, #f4fbf8, #fff); }
+.pregnancy-choices { margin-bottom: 18px; }
+.pregnancy-week { max-width: 320px; }
+.cycle-chat-card { background: linear-gradient(135deg, #fff, #faf7ff); }
+.cycle-disclaimer { display: flex; gap: 12px; align-items: flex-start; padding: 17px 20px; border-radius: 18px; background: #f8f5fa; color: #73697c; border: 1px solid #ebe5ef; }
+.cycle-disclaimer svg { color: #7754ae; flex: 0 0 auto; margin-top: 2px; }
+.cycle-disclaimer p { margin: 0; font-size: 12px; line-height: 1.55; }
+.cycle-disclaimer strong { color: #3d334e; }
+
+@media (max-width: 980px) {
+  .cycle-hero-new { grid-template-columns: 1fr; }
+  .cycle-hero-visual { min-height: 190px; }
+  .cycle-overview-grid { grid-template-columns: 1fr 1fr; }
+  .cycle-current-card { grid-column: 1 / -1; }
+  .cycle-phase-grid { grid-template-columns: repeat(2, 1fr); }
+  .cycle-details-grid { grid-template-columns: 1fr 1fr; }
+  .cycle-setup-card { grid-template-columns: auto 1fr; }
+  .cycle-input-wrap { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .cycle-hero-new { padding: 30px 22px; border-radius: 26px; }
+  .cycle-hero-new h1 { font-size: 42px; letter-spacing: -1.8px; }
+  .cycle-hero-visual { display: none; }
+  .cycle-overview-grid, .cycle-phase-grid, .cycle-details-grid { grid-template-columns: 1fr; }
+  .cycle-current-card { grid-column: auto; }
+  .cycle-calendar-card, .cycle-phase-section, .cycle-details-card, .cycle-care-plan-card, .cycle-chat-card, .cycle-pregnancy-card { padding: 19px; border-radius: 21px; }
+  .cycle-section-heading { flex-direction: column; }
+  .cycle-month-nav { align-self: stretch; justify-content: space-between; }
+  .cycle-calendar-day { min-height: 62px; padding: 7px; }
+  .cycle-calendar-day small { font-size: 8px; }
+  .calendar-marker { display: none; }
+  .cycle-setup-card { grid-template-columns: 1fr; padding: 20px; }
+  .cycle-setup-icon { display: none; }
+  .cycle-plan-highlight { flex-direction: column; }
+}
