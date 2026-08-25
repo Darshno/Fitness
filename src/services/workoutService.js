@@ -232,10 +232,39 @@ function cycleAwareAdjust(day, inPeriodWindow) {
   return day;
 }
 
+// Nudges plan volume using the signup body-photo estimate (bodyAnalysis),
+// when one is available. Deliberately small and conservative: a few minutes
+// of extra emphasis on the type of day the estimate suggests would help most,
+// not a rewrite of the template. Skipped entirely when the estimate itself
+// was low-confidence, since it isn't reliable enough to steer training.
+function bodyAwareAdjust(day, bodyAnalysis, goal) {
+  if (!bodyAnalysis || bodyAnalysis.confidence === "low" || !day.minutes) return day;
+  const { muscleMassLevel, bodyFatLevel } = bodyAnalysis;
+
+  if (goal === "muscle-gain" && muscleMassLevel === "low" && day.focus === "Strength") {
+    return {
+      ...day,
+      minutes: day.minutes + 5,
+      note: "A little extra strength volume added, based on your body analysis.",
+    };
+  }
+
+  if ((goal === "weight-loss" || goal === "general-fitness") && bodyFatLevel === "higher" && day.focus === "Cardio") {
+    return {
+      ...day,
+      minutes: day.minutes + 5,
+      note: "A few extra cardio minutes added, based on your body analysis.",
+    };
+  }
+
+  return day;
+}
+
 export function generateWorkoutPlan({ goal = "general-fitness", weeks = 4, inPeriodWindow = false, profile = null } = {}) {
   const womenSource = womenAwareTemplates(profile || {});
   const source = womenSource || TEMPLATES[goal] || TEMPLATES["general-fitness"];
   const safeWeeks = Math.min(52, Math.max(1, Number.parseInt(weeks, 10) || 4));
+  const bodyAnalysis = profile?.bodyAnalysis || null;
   const plan = {
     generatedAt: new Date().toISOString(),
     source: "frontend-template",
@@ -245,7 +274,12 @@ export function generateWorkoutPlan({ goal = "general-fitness", weeks = 4, inPer
         week: weekIndex + 1,
         days: DAYS.map((name, dayIndex) => {
           const base = rotated[dayIndex];
-          const adjusted = womenSource ? base : cycleAwareAdjust(base, inPeriodWindow && weekIndex === 0);
+          // Women-specific templates (pregnancy/period) are left untouched by
+          // both adjustments below — those templates are already tuned for
+          // safety and shouldn't be layered with cycle- or body-based tweaks.
+          const adjusted = womenSource
+            ? base
+            : bodyAwareAdjust(cycleAwareAdjust(base, inPeriodWindow && weekIndex === 0), bodyAnalysis, goal);
           return {
             id: `w${weekIndex + 1}-d${dayIndex}`,
             day: name,
