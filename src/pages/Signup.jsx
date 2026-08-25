@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { analyzeBodyPhoto } from "../services/bodyAnalysisService";
 import { persistUser } from "../services/authService";
+import BodyPhotoCapture from "../components/BodyPhotoCapture";
 
 function validEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -20,6 +21,7 @@ export default function Signup() {
   const [bodyAnalysis, setBodyAnalysis] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [photoError, setPhotoError] = useState("");
+  const [knownHeightCm, setKnownHeightCm] = useState("");
 
   useEffect(() => () => {
     if (photoPreview) URL.revokeObjectURL(photoPreview);
@@ -40,13 +42,22 @@ export default function Signup() {
     setPhotoError("");
     setAnalyzing(true);
     try {
-      const result = await analyzeBodyPhoto(file);
+      const result = await analyzeBodyPhoto(file, { knownHeightCm });
       setBodyAnalysis(result);
     } catch (err) {
       setPhotoError(err.message);
     } finally {
       setAnalyzing(false);
     }
+  }
+
+  function retakePhoto() {
+    setPhotoPreview((old) => {
+      if (old) URL.revokeObjectURL(old);
+      return "";
+    });
+    setBodyAnalysis(null);
+    setPhotoError("");
   }
 
   function validate() {
@@ -106,28 +117,34 @@ export default function Signup() {
         {errors.confirm && <div className="field-error">{errors.confirm}</div>}
 
         <label className="field"><span>Body photo (optional)</span></label>
-        <label className="secondary-btn" style={{ display: "inline-block" }}>
-          {photoPreview ? "Retake photo" : "Take or upload a full-body photo"}
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            hidden
-            onChange={(e) => {
-              onPhoto(e.target.files?.[0]);
-              e.target.value = "";
-            }}
+
+        {photoPreview ? (
+          <>
+            <img src={photoPreview} alt="Body preview" style={{ maxWidth: 160, display: "block", marginTop: 8, borderRadius: 12 }} />
+            <button type="button" className="ghost-btn" style={{ marginTop: 8 }} onClick={retakePhoto} disabled={analyzing}>
+              Retake photo
+            </button>
+          </>
+        ) : (
+          <BodyPhotoCapture
+            onCapture={onPhoto}
+            disabled={analyzing}
+            knownHeightCm={knownHeightCm}
+            onKnownHeightChange={setKnownHeightCm}
           />
-        </label>
-        {photoPreview && <img src={photoPreview} alt="Body preview" style={{ maxWidth: 160, display: "block", marginTop: 8 }} />}
+        )}
+
         {analyzing && <p className="loading-pulse">Analyzing photo…</p>}
         {photoError && <div className="field-error">{photoError}</div>}
         {bodyAnalysis && (
           <div className="profile-grid" style={{ marginTop: 8 }}>
             <p><strong>Body type:</strong> {bodyAnalysis.bodyType}</p>
             <p><strong>Est. height:</strong> {bodyAnalysis.estimatedHeightRange}</p>
+            <p><strong>Body fat level:</strong> {bodyAnalysis.bodyFatLevel} {bodyAnalysis.bodyFatPercentRange && bodyAnalysis.bodyFatPercentRange !== "unknown" ? `(${bodyAnalysis.bodyFatPercentRange})` : ""}</p>
+            <p><strong>Muscle level:</strong> {bodyAnalysis.muscleMassLevel}</p>
             <p><strong>Posture:</strong> {bodyAnalysis.posture}</p>
             <p><strong>Confidence:</strong> {bodyAnalysis.confidence}</p>
+            {bodyAnalysis.imageIssues && <p className="field-error">{bodyAnalysis.imageIssues}</p>}
             <p className="disclaimer">{bodyAnalysis.disclaimer}</p>
           </div>
         )}
