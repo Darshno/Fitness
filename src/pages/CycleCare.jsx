@@ -81,7 +81,7 @@ export default function CycleCare() {
 
       {plan && <section className="care-card">
         <div className="care-card-head"><div><h2><Sparkles size={19} /> Today’s care plan</h2><p>{plan.intensity}</p></div><Activity size={22} /></div>
-        <div className="care-day-grid">{plan.days.map((day, index) => <article key={index} className="care-day"><small>{["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][index]}</small><strong>{day.title}</strong><span>{day.minutes ? `${day.minutes} min` : "Rest"}</span><p>{day.exercises.join(" · ") || "Recovery"}</p></article>)}</div>
+        <div className="care-day-grid">{(plan?.days ?? []).map((day, index) => <article key={index} className="care-day"><small>{["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][index]}</small><strong>{day.title}</strong><span>{day.minutes ? `${day.minutes} min` : "Rest"}</span><p>{day.exercises.join(" · ") || "Recovery"}</p></article>)}</div>
         {plan.notes?.map((note) => <p className="care-note" key={note}>• {note}</p>)}
       </section>}
 
