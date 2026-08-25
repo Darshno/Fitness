@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useLanguage } from "../context/LanguageContext";
 import { googleSignInPlaceholder } from "../services/authService";
 
 function validEmail(value) {
@@ -11,6 +12,7 @@ function validEmail(value) {
 export default function Login() {
   const { login } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,32 +45,32 @@ export default function Login() {
 
   return (
     <div className="auth-card">
-      <span className="eyebrow">WELCOME BACK</span>
-      <h1>Login</h1>
-      <p className="disclaimer">Sign in to continue your FitBuddy plan.</p>
+      <span className="eyebrow">{t("auth.welcomeBack")}</span>
+      <h1>{t("auth.loginTitle")}</h1>
+      <p className="disclaimer">{t("auth.loginSubtitle")}</p>
       {formError && <div className="form-error">{formError}</div>}
       <form onSubmit={onSubmit}>
-        <label className="field"><span>Email</span>
+        <label className="field"><span>{t("auth.email")}</span>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         {errors.email && <div className="field-error">{errors.email}</div>}
-        <label className="field"><span>Password</span>
+        <label className="field"><span>{t("auth.password")}</span>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
         {errors.password && <div className="field-error">{errors.password}</div>}
-        <button className="primary-btn" type="submit" style={{ width: "100%" }}>Login</button>
+        <button className="primary-btn" type="submit" style={{ width: "100%" }}>{t("auth.loginTitle")}</button>
       </form>
       <button
         className="secondary-btn"
         style={{ width: "100%", marginTop: 10 }}
         onClick={() => toast(googleSignInPlaceholder().message)}
       >
-        Continue with Google
+        {t("auth.continueWithGoogle")}
       </button>
       <p className="auth-switch">
-        <Link to="/forgot-password">Forgot password?</Link>
+        <Link to="/forgot-password">{t("auth.forgotPassword")}</Link>
         <br />
-        New here? <Link to="/signup">Create account</Link>
+        {t("auth.newHere")} <Link to="/signup">{t("auth.createAccount")}</Link>
       </p>
     </div>
   );

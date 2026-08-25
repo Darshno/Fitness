@@ -2,14 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Companion from "../components/Companion";
 import CompanionSelector from "../components/CompanionSelector";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useLanguage } from "../context/LanguageContext";
 import { ACTIVITY_LEVELS, COMPANION_ACCESSORIES, COMPANION_COLORS, FITNESS_GOALS, GENDERS, TIMELINE_OPTIONS, labelFor } from "../data/options";
 import { getReminderSettings, saveReminderSettings } from "../services/notificationService";
 import { updateAccount, updateCompanion } from "../services/userService";
 
 export default function Settings() {
   const { user, setUser, logout } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [reminders, setReminders] = useState(getReminderSettings());
@@ -96,7 +99,7 @@ export default function Settings() {
         <div><small>Goal</small><strong>{labelFor(FITNESS_GOALS, user.profile.goal)}</strong></div>
       </div>
 
-      {!editing && <button className="secondary-btn" style={{ marginTop: 12 }} onClick={() => setEditing(true)}>Edit profile</button>}
+      {!editing && <button className="secondary-btn" style={{ marginTop: 12 }} onClick={() => setEditing(true)}>{t("common.editProfile")}</button>}
 
       {editing && (
         <div style={{ marginTop: 12 }}>
@@ -134,11 +137,16 @@ export default function Settings() {
             </>
           )}
           <div className="btn-row">
-            <button className="primary-btn" onClick={saveProfile}>Save</button>
-            <button className="secondary-btn" onClick={() => setEditing(false)}>Cancel</button>
+            <button className="primary-btn" onClick={saveProfile}>{t("common.save")}</button>
+            <button className="secondary-btn" onClick={() => setEditing(false)}>{t("common.cancel")}</button>
           </div>
         </div>
       )}
+
+      {/* ── Language Section ── */}
+      <h3>{t("settings.language")}</h3>
+      <p className="disclaimer">{t("settings.chooseLanguage")}</p>
+      <LanguageSwitcher />
 
       {/* ── FitBuddy & UI Theme Section ── */}
       <h3>FitBuddy &amp; UI Theme</h3>
@@ -205,7 +213,7 @@ export default function Settings() {
           navigate("/");
         }}
       >
-        Logout
+        {t("common.logout")}
       </button>
     </div>
   );

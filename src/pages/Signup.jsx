@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import { analyzeBodyPhoto } from "../services/bodyAnalysisService";
 import { persistUser } from "../services/authService";
 import BodyPhotoCapture from "../components/BodyPhotoCapture";
@@ -11,6 +12,7 @@ function validEmail(value) {
 
 export default function Signup() {
   const { signup } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const [errors, setErrors] = useState({});
@@ -95,23 +97,23 @@ export default function Signup() {
 
   return (
     <div className="auth-card">
-      <span className="eyebrow">CREATE ACCOUNT</span>
-      <h1>Sign up</h1>
+      <span className="eyebrow">{t("auth.createAccountEyebrow")}</span>
+      <h1>{t("auth.signupTitle")}</h1>
       {formError && <div className="form-error">{formError}</div>}
       <form onSubmit={onSubmit}>
-        <label className="field"><span>Name</span>
+        <label className="field"><span>{t("auth.name")}</span>
           <input value={form.name} onChange={(e) => set("name", e.target.value)} />
         </label>
         {errors.name && <div className="field-error">{errors.name}</div>}
-        <label className="field"><span>Email</span>
+        <label className="field"><span>{t("auth.email")}</span>
           <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} />
         </label>
         {errors.email && <div className="field-error">{errors.email}</div>}
-        <label className="field"><span>Password</span>
+        <label className="field"><span>{t("auth.password")}</span>
           <input type="password" value={form.password} onChange={(e) => set("password", e.target.value)} />
         </label>
         {errors.password && <div className="field-error">{errors.password}</div>}
-        <label className="field"><span>Confirm password</span>
+        <label className="field"><span>{t("auth.confirmPassword")}</span>
           <input type="password" value={form.confirm} onChange={(e) => set("confirm", e.target.value)} />
         </label>
         {errors.confirm && <div className="field-error">{errors.confirm}</div>}
@@ -149,9 +151,9 @@ export default function Signup() {
           </div>
         )}
 
-        <button className="primary-btn" type="submit" style={{ width: "100%", marginTop: 12 }}>Create account</button>
+        <button className="primary-btn" type="submit" style={{ width: "100%", marginTop: 12 }}>{t("auth.createAccount")}</button>
       </form>
-      <p className="auth-switch">Already have an account? <Link to="/login">Login</Link></p>
+      <p className="auth-switch">{t("auth.alreadyHaveAccount")} <Link to="/login">{t("auth.loginTitle")}</Link></p>
     </div>
   );
 }
