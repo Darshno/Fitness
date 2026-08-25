@@ -1,0 +1,15 @@
+.language-switcher {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 9px 12px;
+  background: var(--input-bg, #fff);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+.language-switcher:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px var(--lavender);
+}
