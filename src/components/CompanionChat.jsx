@@ -17,8 +17,11 @@ export default function CompanionChat({ mode = "home", opener = "Hey! What can I
       try {
         const existing = await getChatHistory(mode);
         if (active) setMessages(existing.length ? existing : seedChat(mode, opener));
-      } catch (error) {
-        if (active) setError(error.message);
+      } catch (err) {
+        if (active) {
+          setMessages(seedChat(mode, opener));
+          setError(err?.message || "Could not load chat history.");
+        }
       }
     })();
     return () => { active = false; };
@@ -28,16 +31,25 @@ export default function CompanionChat({ mode = "home", opener = "Hey! What can I
     event.preventDefault();
     const value = text.trim();
     if (!value || sending) return;
+
+    const optimistic = {
+      id: `local-${Date.now()}`,
+      role: "user",
+      text: value,
+      at: new Date().toISOString(),
+    };
+    setMessages((current) => [...current, optimistic]);
     setText("");
     setSending(true);
     setError("");
+
     try {
       const result = await sendChatMessage({ mode, text: value });
-      if (result?.history) setMessages(result.history);
+      if (Array.isArray(result?.history)) setMessages(result.history);
       if (typeof result?.aiEnabled === "boolean") setAiEnabled(result.aiEnabled);
-      if (result?.fallback) setError("AI service is unavailable, so FitBuddy is using a limited local fallback.");
-    } catch (error) {
-      setError(error.message);
+      if (result?.fallback) setError("Gemini is unavailable right now. FitBuddy is using a basic fallback response.");
+    } catch (err) {
+      setError(err?.message || "FitBuddy could not respond.");
     } finally {
       setSending(false);
     }
@@ -57,14 +69,14 @@ export default function CompanionChat({ mode = "home", opener = "Hey! What can I
             {message.resources?.map((resource) => <div key={resource.href}><a href={resource.href} target="_blank" rel="noreferrer">{resource.label}</a></div>)}
           </div>
         ))}
-        {sending && <div className="message bot" aria-label="FitBuddy is typing">FitBuddy is thinking…</div>}
+        {sending && <div className="message bot">FitBuddy is thinking…</div>}
       </div>
       {error && <p className="form-error" style={{ marginTop: 10 }}>{error}</p>}
-      {!aiEnabled && !error && <p className="disclaimer">AI service is not connected. Connect the backend and GEMINI_API_KEY for full FitBuddy answers.</p>}
+      {!aiEnabled && !error && <p className="disclaimer">AI service is not connected. Check the Render Gemini environment variables.</p>}
       <p className="disclaimer">AI guidance is general wellbeing support, not medical diagnosis or treatment.</p>
       <form className="chat-input" onSubmit={onSubmit}>
         <input value={text} onChange={(e) => setText(e.target.value)} placeholder={placeholder} disabled={sending} autoComplete="off" />
-        <button type="submit" disabled={sending || !text.trim()} aria-label="Send">{sending ? "…" : "➤"}</button>
+        <button type="submit" disabled={sending || !text.trim()} aria-label="Send">{sending ? "…" : "Send"}</button>
       </form>
     </div>
   );
